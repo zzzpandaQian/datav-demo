@@ -1,0 +1,90 @@
+.d-flex{
+  display: flex;
+}
+.w-100{
+  width: 100%;
+}
+.h-100{
+  height: 100%;
+}
+/* 文字超出截断隐藏 */
+.clamp {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	display: block;
+}
+.clamp-2{
+	text-overflow: -o-ellipsis-lastline;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+.clamp-3{
+	text-overflow: -o-ellipsis-lastline;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	line-clamp: 3;
+	-webkit-box-orient: vertical;
+}
+// 基本样式
+.d-flex-row{
+  display: flex;
+  flex-direction: row;
+}
+$align-type: (
+  'start': 'flex-start',
+  'end': 'flex-end',
+  'between': 'space-between',
+  'around': 'space-around',
+);
+@each $k,$v in $align-type{
+  .row-#{$k}{
+    justify-content: #{$v};
+  }
+  .col-#{$k}{
+    align-items: #{$v};
+  }
+}
+
+$positionDict:(
+  'l': 'left',
+  'r': 'right',
+  't': 'top',
+  'b': 'bottom'
+);
+$mAndp: (
+  '.m': 'margin',
+  '.p': 'padding'
+);
+@each $k,$v in $mAndp{
+  @each $k1,$v1 in $positionDict{
+    @for $num from 1 through 5{
+      #{$k}-#{$k1}-#{$num}{
+        #{$v}-#{$v1}: calc(#{$num} * 0.25rem)!important;
+      }
+    }
+  }
+};
+
+@for $v from 1 through 8{
+  .fs-#{$v}{
+    font-size: calc(#{$v} * 0.25rem);
+  }
+}
+
+.font-bold{
+  font-weight: bold;
+}
+
+.relative{
+  position: relative;
+}
+.absolute{
+  position: absolute;
+}
