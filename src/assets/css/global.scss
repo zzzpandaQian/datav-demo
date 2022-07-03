@@ -1,6 +1,13 @@
 .d-flex{
   display: flex;
 }
+.d-flex-row{
+  display: flex;
+  flex-direction: row;
+}
+.flex-1{
+  flex: 1;
+}
 .w-100{
   width: 100%;
 }
@@ -64,7 +71,7 @@ $mAndp: (
 );
 @each $k,$v in $mAndp{
   @each $k1,$v1 in $positionDict{
-    @for $num from 1 through 5{
+    @for $num from 1 through 10{
       #{$k}-#{$k1}-#{$num}{
         #{$v}-#{$v1}: calc(#{$num} * 0.25rem)!important;
       }
@@ -87,4 +94,8 @@ $mAndp: (
 }
 .absolute{
   position: absolute;
+}
+
+.text-align-end{
+  text-align: end;
 }
