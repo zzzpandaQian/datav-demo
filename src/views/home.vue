@@ -42,8 +42,8 @@
 <script>
 // @ is an alias to /src
 import * as echarts from 'echarts';
-import {option1} from '@/date/top5';
-import {categoryOption} from '@/date/category';
+import {option1} from '@/data/top5';
+import {categoryOption} from '@/data/category';
 
 export default {
   name: 'home',
@@ -51,6 +51,8 @@ export default {
     return  {
       nowDate: new Date().toLocaleString(),
       timer: null,
+      current: 0,
+      categoryInterval: null
     }
   },
   created(){
@@ -69,6 +71,7 @@ export default {
   beforeDestroy(){
     try{
       clearInterval(this.timer)
+      clearInterval(this.categoryInterval)
       cancelAnimationFrame(this.timer)
     }
     finally{
@@ -80,13 +83,62 @@ export default {
     loadData(){
       const top5 = echarts.init(document.getElementById('top5-chart'));
       top5.setOption(option1)
-      const categoryChart = echarts.init(document.getElementById('category-chart'));
-      categoryChart.setOption(categoryOption)
+      this.getCategoryData()
     },
     runClock(){
       this.nowDate = new Date().toLocaleString()
       this.timer = requestAnimationFrame(this.runClock,1000)
     },
+    getCategoryData(){
+      const categoryChart = echarts.init(document.getElementById('category-chart'));
+      new Promise(resolve=>{
+        console.log('load category data')
+        resolve()
+      }).then(r=>{
+        const data = [
+          {
+            name: "莘庄街道1号柜",
+            value: [0.72, 8.76, 12.11, 6.09, 33, 6,2,10],
+          },
+          {
+            name: "莘庄街道2号柜",
+            value: [20.72, 18.76, 22.11, 26.09, 13, 16,20,3],
+          },
+          {
+            name: "莘庄街道3号柜",
+            value: [10.72, 3.76, 17.11, 16.09, 23, 16,1,20],
+          },
+          {
+            name: "莘庄街道4号柜",
+            value: [10.72, 3.76, 1.11, 16.09, 2, 16,6,1],
+          },
+                    {
+            name: "莘庄街道5号柜",
+            value: [20.72, 32.76, 1.11, 6.09, 3, 6,4,6],
+          },
+        ]
+        categoryOption.legend.data = [data[this.current].name]
+        categoryOption.series[0].data[0].name = data[this.current].name
+        categoryOption.series[0].data[0].value = data[this.current].value
+        categoryOption.series[0].data[0].groupId = 'category'
+        categoryChart.setOption(categoryOption)
+        this.categoryInterval = setInterval(()=>{
+          if(this.current == 4){
+            this.current = 0
+          }else{
+            this.current += 1
+          }
+          categoryOption.legend.data = [data[this.current].name]
+          categoryOption.series[0].data[0].name = data[this.current].name
+          categoryOption.series[0].data[0].value = data[this.current].value
+          categoryOption.series[0].data[0].groupId = 'category'
+
+          categoryChart.setOption(categoryOption)
+
+        },3000)
+      })
+
+    }
   },
   computed:{
     nowTime(){

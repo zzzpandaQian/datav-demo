@@ -48,34 +48,50 @@ export const categoryOption = {
         {
           name: "党政专题",
           min: 0,
+          max: 35,
+          alignTicks: false,
         },
         {
           name: "经济管理",
           min: 0,
+          max: 35,
+          alignTicks: false,
         },
         {
           name: "心理励志",
           min: 0,
+          max: 35,
+          alignTicks: false,
         },
         {
           name: "时尚生活",
           min: 0,
+          max: 35,
+          alignTicks: false,
         },
         {
           name: "其他",
           min: 0,
+          max: 35,
+          alignTicks: false,
         },
         {
           name: "信息科技",
           min: 0,
+          max: 35,
+          alignTicks: false,
         },
         {
           name: "家庭少儿",
           min: 0,
+          max: 35,
+          alignTicks: false,
         },
         {
           name: "畅销文学",
           min: 0,
+          max: 35,
+          alignTicks: false,
         },
       ],
       center: ["50%", "50%"], // 位置
@@ -93,9 +109,15 @@ export const categoryOption = {
   series: [
     {
       type: "radar",
+      name: "莘庄街道1号柜",
       select: {
         disabled: true
       },
+      // 是动画前一帧为上一组数据（需groupId相同），而非从原点开始变化，全局过渡动画相关的配置。
+      universalTransition: {
+        enabled: true,
+      },
+      animationDuration: 1500,
       itemStyle: { // 折线样式设置
         normal: {   // 普通状态下
           lineStyle: {
@@ -110,29 +132,28 @@ export const categoryOption = {
           opacity: 0
         }
       },
+      lineStyle: {
+        color: "#fff",
+        width: 1,
+      },
+      areaStyle: {
+          color: "#00F5FF",
+          opacity:1,
+          shadowColor: "#fff",
+          shadowBlur: 25,
+          z: 1,
+      },
       data: [
         {
-          value: [0.72, 8.76, 12.11, 6.09, 33, 6],
-          name: "莘庄街道1号柜",
+          value: "",
+          name:"",
+          groupId: 'category'
           // itemStyle: { //单个拐点样式设置
           //   borderWidth: 0,
           //   color: "transparent"
           // },
-          lineStyle: {
-            color: "#fff",
-            width: 1,
-          },
-          areaStyle: {
-              color: "#00F5FF",
-              opacity:1,
-              shadowColor: "#fff",
-              shadowBlur: 25,
-              z: 1,
-          },
-        },
-        {
-          value: [0.72, 8.76, 12.11, 6.09, 33, 6],
-        },
+
+        }
       ]
     },
   ],
