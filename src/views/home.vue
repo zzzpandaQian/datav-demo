@@ -29,10 +29,21 @@
               </div>
             </section>
           </div>
+          <img src="@/assets/images/line.png" class="line-img">
         </section>
       </div>
       <div class="main-wrap flex-1">
-        <section></section>
+        <section class="read-date-wrap p-t-2">
+          <div class="w-100 d-flex-row row-end">
+            <img src="@/assets/images/borrow-date.png" class="section-title m-r-5" alt="借阅效果分布">
+          </div>
+          <img src="@/assets/images/line.png" class="line-img hidden rotate-180">
+
+            <div class="chart-blk m-b-6">
+              <div id="borrow-chart"></div>
+            </div>
+          <img src="@/assets/images/line.png" class="line-img rotate-180">
+        </section>
       </div>
 
     </div>
@@ -44,6 +55,7 @@
 import * as echarts from 'echarts';
 import {option1} from '@/data/top5';
 import {categoryOption} from '@/data/category';
+import { borrowOption } from '@/data/borrow';
 
 export default {
   name: 'home',
@@ -52,7 +64,9 @@ export default {
       nowDate: new Date().toLocaleString(),
       timer: null,
       current: 0,
-      categoryInterval: null
+      categoryInterval: null,
+      borrowCount: 0,
+      borrowTimer: null
     }
   },
   created(){
@@ -84,10 +98,38 @@ export default {
       const top5 = echarts.init(document.getElementById('top5-chart'));
       top5.setOption(option1)
       this.getCategoryData()
+      this.getBorrowData()
     },
     runClock(){
       this.nowDate = new Date().toLocaleString()
       this.timer = requestAnimationFrame(this.runClock,1000)
+    },
+    getBorrowData(){
+      const borrowChart = echarts.init(document.getElementById('borrow-chart'));
+      borrowChart.setOption(borrowOption)
+      let sum = borrowOption.series[0].data.length -1
+      console.log(sum);
+      this.borrowCount = 0
+      this.borrowTimer = setInterval(()=>{
+        console.log(this.borrowCount - 1<0?sum:this.borrowCount-1);
+        borrowChart.dispatchAction({
+          type: "highlight",
+          seriesIndex:0,
+          dataIndex: this.borrowCount
+        })
+        borrowChart.dispatchAction({
+          type: "downplay",
+          seriesIndex:0,
+          dataIndex: this.borrowCount - 1<0?sum:this.borrowCount-1
+        })
+        if(this.borrowCount == sum){
+          this.borrowCount = 0
+        }else{
+          this.borrowCount += 1
+        }
+
+      },3000)
+
     },
     getCategoryData(){
       const categoryChart = echarts.init(document.getElementById('category-chart'));
@@ -208,17 +250,25 @@ export default {
       font-size: 1rem;
       font-weight: 600;
     }
-    #top5-chart{
-      // calc((100vw - 5rem)/2 * 6/10 * 3/5)
-      height: calc((100vw - 5rem) * 0.18);
-    }
+
     #category-chart{
       height: calc((100vw - 5rem) * 0.18);
     }
+  }
+  #top5-chart,#borrow-chart{
+    height: calc((100vw - 5rem) * 0.18);
   }
 }
 .line-img{
   width: 100%;
 }
-
+.row-end{
+  justify-content: flex-end;
+}
+.rotate-180{
+  transform: rotate(180deg);
+}
+.hidden{
+  visibility: hidden;
+}
 </style>
